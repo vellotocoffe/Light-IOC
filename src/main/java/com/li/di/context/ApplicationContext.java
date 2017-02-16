@@ -8,6 +8,10 @@ import java.util.concurrent.ConcurrentHashMap;
 import com.li.di.annotations.AutoInjected;
 import com.li.di.annotations.Bean;
 
+/**
+ * Un contexte qui gère les Beans
+ * @author hli
+ */
 public class ApplicationContext {
 	private static ConcurrentHashMap<Class<?>, Object> internMap = new ConcurrentHashMap<>();
 	private static Class<?> beansDefinitions;
@@ -20,6 +24,10 @@ public class ApplicationContext {
 		return getBeanInstance(clazz);
 	}
 	
+	/**
+	 * @param clazz
+	 * @return Une instance de Bean
+	 */
 	private static Object getBeanInstance(Class<?> clazz) {
 		if (internMap.containsKey(clazz)) {
 			return internMap.get(clazz);
@@ -41,6 +49,16 @@ public class ApplicationContext {
 		return internMap.get(clazz);
 	}
 	
+	/**
+	 * Injecter toutes les dépendences nécessaires à un Objet
+	 * @param beforeInjection
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws InstantiationException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 */
 	private static void injectDependenciesViaSetters(Object beforeInjection)
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, InstantiationException,
 			NoSuchMethodException, SecurityException {
@@ -60,6 +78,17 @@ public class ApplicationContext {
 		}
 	}
 
+	/**
+	 * 
+	 * @param clazz
+	 * @return une instance de Bean
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
+	 * @throws InstantiationException
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 */
 	private static Object scanBeansAndReturn(Class<?> clazz) throws IllegalAccessException, IllegalArgumentException,
 			InvocationTargetException, InstantiationException, NoSuchMethodException, SecurityException {
 		Method[] methods = beansDefinitions.getDeclaredMethods();
